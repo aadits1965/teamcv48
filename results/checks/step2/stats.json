@@ -1,0 +1,13 @@
+{
+  "timing_s": {
+    "real": 10.4,
+    "fake": 10.8
+  },
+  "n_crops": 32,
+  "providers": [
+    "TensorrtExecutionProvider",
+    "CUDAExecutionProvider",
+    "CPUExecutionProvider"
+  ],
+  "commit": "387a422"
+}

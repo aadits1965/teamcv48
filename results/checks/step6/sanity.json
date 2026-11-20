@@ -1,0 +1,200 @@
+{
+  "A_data": {
+    "train_crops": 9600,
+    "val_crops": 2240,
+    "missing_files": 0,
+    "train_by_method": {
+      "real": 1920,
+      "Deepfakes": 1920,
+      "Face2Face": 1920,
+      "FaceSwap": 1920,
+      "NeuralTextures": 1920
+    },
+    "val_by_method": {
+      "real": 1120,
+      "FaceShifter": 1120
+    },
+    "fake_same_frame_count_as_real_by_method": {
+      "Deepfakes": 1.0,
+      "Face2Face": 0.005,
+      "FaceShifter": 1.0,
+      "FaceSwap": 0.503,
+      "NeuralTextures": 0.503
+    },
+    "fake_minus_real_frames_by_method": {
+      "Deepfakes": {
+        "min": 0.0,
+        "50%": 0.0,
+        "max": 0.0
+      },
+      "Face2Face": {
+        "min": -1078.0,
+        "50%": 0.0,
+        "max": 1078.0
+      },
+      "FaceShifter": {
+        "min": 0.0,
+        "50%": 0.0,
+        "max": 0.0
+      },
+      "FaceSwap": {
+        "min": -1078.0,
+        "50%": 0.0,
+        "max": 0.0
+      },
+      "NeuralTextures": {
+        "min": -1078.0,
+        "50%": 0.0,
+        "max": 0.0
+      }
+    }
+  },
+  "A_pairs": {
+    "exact_pair_fraction": {
+      "Deepfakes": 1.0,
+      "Face2Face": 0.14375,
+      "FaceSwap": 0.571875,
+      "NeuralTextures": 0.571875
+    },
+    "steps_per_epoch": 480,
+    "fingerprint": "94d83eb1b3f4",
+    "layout_ok": true
+  },
+  "B_baseline": {
+    "load_s": 21.9,
+    "trainable_tensors": 102,
+    "trainable_params": 104450,
+    "loss": -0.1709,
+    "extra": 0.0,
+    "parts": {
+      "ce": 0.6951663494110107,
+      "align": 0.10328777879476547,
+      "unif": -0.9693785905838013
+    },
+    "mechanism": {},
+    "grads_missing": [],
+    "grads_all_zero": [],
+    "grads_nonfinite": [],
+    "frozen_with_grad": 0,
+    "finite": true
+  },
+  "B_pdc": {
+    "load_s": 1.9,
+    "trainable_tensors": 102,
+    "trainable_params": 104450,
+    "loss": -0.1709,
+    "extra": 0.686465,
+    "parts": {
+      "ce": 0.6951663494110107,
+      "align": 0.10328777879476547,
+      "unif": -0.9693785905838013
+    },
+    "mechanism": {
+      "pdc_cos": 0.3135353922843933,
+      "d_norm": 0.6399333477020264
+    },
+    "grads_missing": [],
+    "grads_all_zero": [],
+    "grads_nonfinite": [],
+    "frozen_with_grad": 0,
+    "finite": true
+  },
+  "B_vrex": {
+    "load_s": 2.1,
+    "trainable_tensors": 102,
+    "trainable_params": 104450,
+    "loss": -0.1709,
+    "extra": 3e-06,
+    "parts": {
+      "ce": 0.6951663494110107,
+      "align": 0.10328777879476547,
+      "unif": -0.9693785905838013
+    },
+    "mechanism": {
+      "risk_e0": 0.6971461772918701,
+      "risk_e1": 0.696588933467865,
+      "risk_e2": 0.6938320398330688,
+      "risk_e3": 0.6930983066558838
+    },
+    "grads_missing": [],
+    "grads_all_zero": [],
+    "grads_nonfinite": [],
+    "frozen_with_grad": 0,
+    "finite": true,
+    "per_sample_ce_by_env_is_variance_source": {
+      "risk_e0": 0.6971461772918701,
+      "risk_e1": 0.696588933467865,
+      "risk_e2": 0.6938320398330688,
+      "risk_e3": 0.6930983066558838
+    }
+  },
+  "B_patch": {
+    "load_s": 1.8,
+    "trainable_tensors": 104,
+    "trainable_params": 105475,
+    "loss": -0.1709,
+    "extra": 0.0,
+    "parts": {
+      "ce": 0.6951663494110107,
+      "align": 0.10328777879476547,
+      "unif": -0.9693785905838013
+    },
+    "mechanism": {},
+    "grads_missing": [],
+    "grads_all_zero": [
+      "pool.q"
+    ],
+    "grads_nonfinite": [],
+    "frozen_with_grad": 0,
+    "finite": true,
+    "gamma_grad": 0.05696714296936989,
+    "q_grad_norm_at_gamma0": 0.0,
+    "equals_baseline_at_init": true
+  },
+  "C_gpu": [
+    {
+      "batch": 32,
+      "grad_ckpt": false,
+      "s_per_step": 1.021,
+      "img_per_s": 31.3,
+      "peak_gb": 8.61
+    },
+    {
+      "batch": 48,
+      "grad_ckpt": false,
+      "s_per_step": 1.439,
+      "img_per_s": 33.4,
+      "peak_gb": 11.99
+    },
+    {
+      "batch": 64,
+      "grad_ckpt": false,
+      "oom": true
+    },
+    {
+      "batch": 64,
+      "grad_ckpt": true,
+      "s_per_step": 2.438,
+      "img_per_s": 26.3,
+      "peak_gb": 3.92
+    }
+  ],
+  "D_loader_img_per_s": 97.3,
+  "E_val": {
+    "seconds": 28.6,
+    "frames": 2240,
+    "init_metrics": {
+      "auc": 0.46910714285714283,
+      "ap": 0.4821914404594415,
+      "acc": 0.5035714285714286,
+      "bacc": 0.5035714285714286,
+      "f1": 0.6445012787723785,
+      "n": 280
+    }
+  },
+  "F_overfit_ce": {
+    "first": 0.6952,
+    "last": 0.6733,
+    "min": 0.6733
+  }
+}

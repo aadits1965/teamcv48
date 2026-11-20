@@ -1,0 +1,233 @@
+
+\documentclass[8pt,a4paper]{article}
+
+% ------------------------------------------------
+% Packages
+% ------------------------------------------------
+\usepackage[
+    top=0.15in,
+    bottom=0.15in,
+    left=0.55in,
+    right=0.55in
+]{geometry}
+
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{makecell}
+\usepackage{caption}
+\usepackage{hyperref}
+\usepackage{titlesec}
+
+% ------------------------------------------------
+% Formatting
+% ------------------------------------------------
+
+% Black-and-white hyperlinks
+\hypersetup{
+    colorlinks=true,
+    allcolors=black
+}
+
+% Reduce line spacing
+\linespread{0.52}
+
+% Reduce paragraph spacing
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1pt}
+
+% Reduce section heading spacing
+\titlespacing*{\subsection}
+{0pt}{7pt}{3pt}
+
+% Table formatting
+\setlength{\tabcolsep}{5pt}
+\renewcommand{\arraystretch}{1.05}
+
+\captionsetup[table]{
+    font=small,
+    labelfont=bf,
+    position=top,
+    skip=3pt
+}
+
+% ------------------------------------------------
+% Document
+% ------------------------------------------------
+\begin{document}
+\thispagestyle{empty}
+
+% ------------------------------------------------
+% Title and Team Information
+% ------------------------------------------------
+\begin{center}
+
+{\large\bfseries
+GenD with Pair-Difference Consistency and Risk Equalisation}\\[4pt]
+
+\textbf{Team No:} CV48
+\quad \textbar{} \quad
+\textbf{Members:}
+Aadit Siroya (230103126), Kshitiz Kumar Rai (230103122), Pankaj (230108035), Mohit Nagraj (230104062), Anubhav Jindal (230101013)\\[3pt]
+
+\textbf{GitHub:}
+\url{https://github.com/aadits1965/teamcv48}
+
+\end{center}
+
+\vspace{-5pt}
+
+% ------------------------------------------------
+\subsection*{I. Abstract (Maximum 100 Words)}
+% ------------------------------------------------
+Deepfake detectors trained on one benchmark often fail on unseen generators because they learn dataset shortcuts rather than manipulation evidence; fully fine-tuning large backbones worsens this. GenD freezes a CLIP ViT-L/14, tunes only its LayerNorms (about 0.03\% of weights), places features on a unit hypersphere shaped by alignment and uniformity losses, and trains on real/fake pairs sharing a source video, so background and scene cannot separate the classes. In our reading, its key idea is to limit how far the pretrained representation may move, keeping general visual features while learning a small, transferable forgery cue.
+
+% ------------------------------------------------
+\subsection*{II. Proposed Novelty \& Technical Contribution}
+% ------------------------------------------------
+\textbf{Type:} two training-loss terms; architecture, 104,450 trainable parameters and inference unchanged.
+\textbf{(a) Pair-Difference Consistency (PDC).} GenD's losses act on embedding \emph{positions} (alignment, uniformity); nothing constrains the \emph{direction} in which a fake differs from a real. PDC asks the fake$-$real displacements $d_i$ of all pairs and manipulation types to share one direction $u$.
+\textbf{(b) Risk equalisation across manipulation types} (V-REx [2]; environments = the four FF++ methods), penalising differences in per-manipulation risk.
+\textbf{Selection protocol:} PDC was chosen on validation among four candidates (PDC, V-REx, LayerNorm weight averaging, patch-token pooling) \emph{before} any test result. PDC+V-REx is an \emph{exploratory follow-up}: planned in writing before it was run (\texttt{PREREGISTRATION.md}), but motivated by main-study test results and tested on the same sets, so not independent confirmation.
+
+% ------------------------------------------------
+\subsection*{III. Theoretical / Mathematical Justification}
+% ------------------------------------------------
+With $z=f_\theta(x)/\|f_\theta(x)\|$ ($f_\theta$: CLIP with trainable LayerNorms $\theta$), pairs $(r_i,f_i)$, $i{=}1..P$ (fake $f_i$ from the source video of real $r_i$), and $d_i = z_{f_i}-z_{r_i}$, $\hat d_i=d_i/\|d_i\|$:
+\[
+\mathcal{L}=\underbrace{\mathcal{L}_{CE}+0.1\,\mathcal{L}_{align}+0.5\,\mathcal{L}_{unif}}_{\text{GenD}}
++\lambda_p\,\tfrac{1}{P}\textstyle\sum_i\big(1-\langle \hat d_i,u\rangle\big)
++\lambda_r(t)\,\mathrm{Var}_{e}\big[R_e\big],
+\]
+with $u\leftarrow n\big(\beta u+(1-\beta)\,n(\overline{\hat d})\big)$ (stop-grad, $\beta{=}0.9$), $n(v)=v/\|v\|$, $\overline{\hat d}$ the batch mean of $\hat d_i$, $R_e$ the cross-entropy over the pairs of manipulation $e\in\{\text{DF,F2F,FS,NT}\}$, $\lambda_p{=}0.5$, $\lambda_r{=}10$ after a 20\% warm-up.
+\textbf{Why it should help.} For a linear head $s(z)=w^\top z+b$, the margin of pair $i$ is $s(z_{f_i})-s(z_{r_i})=\|w\|\,\|d_i\|\cos\angle(d_i,w)$. If displacements of different manipulations diverge, one head direction gives inconsistent margins across methods. PDC pulls all displacements towards a shared direction $u$, so $w\parallel u$ gives consistently positive margins (a sufficient regulariser, not a necessary condition for separability). This orders each fake above its own real; AUC (all fakes vs.\ all reals) also needs compact classes (encouraged by $\mathcal{L}_{align}$). An unseen generator $g$ benefits to the extent that $\cos\angle(d_g,u)>0$. V-REx complements this by equalising per-manipulation risk. \textbf{Pairing invariance:} $\mathbb{E}_{i,j}[z_{f_i}-z_{r_j}]=\mu_f-\mu_r=\mathbb{E}_i[d_i]$, so the mean displacement ignores pairing; $u$ (from \emph{normalised} $d_i$) is only approximately pairing-invariant. \textbf{Evidence (not a proof):} on FaceShifter test pairs, $\cos\angle(d,\bar u)$, with $\bar u$ the mean test displacement of the four training manipulations (a proxy for $u$), rises from 0.183 (GenD) to 0.264 (PDC) at all 3 seeds, the spread of per-manipulation AUC falls from 0.172 to 0.145 (PDC) and 0.097 (PDC+V-REx). \textbf{Against:} PDC+V-REx has a lower cosine (0.227) than PDC, and $\lambda_p{=}2$ has the highest (0.326) but no AUC gain, so alignment alone does not predict AUC.
+
+% ------------------------------------------------
+\subsection*{IV. Comparative Results \& Empirical Evaluation}
+% ------------------------------------------------
+\textbf{Setup.} FF++ c23 official splits, 120 of 360 train pairs (DF, F2F, FS, NT), 8 frames/video for training and testing, authors' face-crop pipeline and code [1] (\texttt{387a422}), 1,920 steps $\times$ 48 images, one cosine decay, identical batches for all methods. Tests: FF++ (700 videos), FaceShifter (280; unseen generator; its val split is our only selection set), DeepFakeDetection (400; \emph{unseen dataset}, fully held out). Video-level AUC, 3 seeds, paired bootstrap per seed; the baseline is a scaled-down GenD reproduction (paper: all train videos, 32 frames, batch 128, cyclic schedule).
+
+\begin{center}
+
+\captionof{table}{
+Video-level AUC, mean $\pm$ sd over seeds. Best of the three main rows in bold; inference cost identical for all our rows.
+}
+
+\label{tab:results}
+
+\small
+
+\begin{tabularx}{\linewidth}{
+    @{}X c c c c@{}
+}
+
+\toprule
+
+\textbf{Method}
+&
+\makecell{\textbf{FF++ AUC}\\($\uparrow$)}
+&
+\makecell{\textbf{FaceShifter AUC}\\($\uparrow$)}
+&
+\makecell{\textbf{DFD AUC}\\($\uparrow$)}
+&
+\makecell{\textbf{Trainable}\\\textbf{params} (M)}
+\\
+
+\midrule
+
+GenD reproduction (baseline, 3 seeds)
+&
+0.866 $\pm$ 0.018
+&
+0.861 $\pm$ 0.009
+&
+0.961 $\pm$ 0.004
+&
+0.104
+\\
+
++ PDC (3 seeds; selected on validation)
+&
+0.891 $\pm$ 0.017
+&
+\textbf{0.885} $\pm$ 0.005
+&
+0.959 $\pm$ 0.002
+&
+0.104
+\\
+
+\textbf{+ PDC + V-REx (ours, 3 seeds; exploratory)}
+&
+\textbf{0.922} $\pm$ 0.003
+&
+0.883 $\pm$ 0.011
+&
+\textbf{0.971} $\pm$ 0.003
+&
+0.104
+\\
+
+\midrule
+
+$\Delta$ (Ours -- Baseline) [seeds with 95\% CI $>$ 0]
+&
++0.055 [3/3]
+&
++0.022 [2/3]
+&
++0.010 [2/3]
+&
++0.0
+\\
+
+\midrule
+
+\emph{Controls:} PDC, shuffled pairs (2 seeds)
+&
+0.880 $\pm$ 0.002
+&
+0.888 $\pm$ 0.001
+&
+0.958 $\pm$ 0.008
+&
+0.104
+\\
+
+\emph{Scale-up (3$\times$ data):} GenD $\to$ + PDC (2 seeds)
+&
+0.897 $\to$ 0.923
+&
+0.874 $\to$ 0.881
+&
+0.966 $\to$ 0.955
+&
+0.104
+\\
+
+Released GenD checkpoint (full training, reference)
+&
+0.977
+&
+0.859
+&
+0.961
+&
+0.104
+\\
+
+\bottomrule
+
+\end{tabularx}
+
+\end{center}
+
+\vspace{-5pt}
+
+\textbf{Result Interpretation:}
+\textbf{PDC alone} improves AUC by +0.024 on FF++ and +0.024 on FaceShifter (CI $>0$ at 3/3 seeds; seed $t$-test $p{=}0.008$, $0.014$), with no change on DFD ($-0.002$). Shuffled pairs (2 seeds) give similar FF++/FaceShifter gains (source-video correspondence seemingly not required), but seed 0 loses on DFD ($-0.012$, CI $<0$). \textbf{PDC + V-REx} is the best of the three main rows on FF++ and DFD (V-REx alone: 0.972 on DFD; PDC: 0.885 vs 0.883 on FaceShifter). Over the baseline: +0.055 on FF++ (3/3 seeds, $p{=}0.041$); +0.022 on FaceShifter and +0.010 on DFD (2/3 seeds each, but $p{=}0.18$ and $0.12$ across seeds, not significant). Versus PDC alone: +0.012 on DFD at every seed ($p{=}0.006$), +0.031 on FF++ (3/3, $p{=}0.11$).
+\textbf{Trade-offs and limits.} PDC is sensitive to $\lambda_p$ ($\lambda_p{=}2$ removes the gain). At 3$\times$ data PDC keeps its FF++ gain (+0.025, 2/2 seeds) but not its FaceShifter gain (+0.007, n.s.; DFD $-0.011$): part of that benefit reflects an under-trained baseline. PDC+V-REx was not run at 3$\times$ data; all runs are scaled down; DFD is near ceiling (400 videos).
+\textbf{References.} [1] Yermakov et al., Deepfake Detection that Generalizes Across Benchmarks, WACV 2026, arXiv:2508.06248. [2] Krueger et al., Risk Extrapolation (V-REx), ICML 2021, PMLR 139:5815--5826.
+
+\end{document}

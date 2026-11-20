@@ -1,0 +1,33 @@
+{
+  "arm": "pdc",
+  "seed": 0,
+  "epochs": 6,
+  "max_steps": 0,
+  "pairs": 24,
+  "lr": 0.0003,
+  "min_lr": 1e-06,
+  "lam": 2.0,
+  "vrex_warmup": 0.2,
+  "eval_every": 160,
+  "snap_every": 80,
+  "workers": 2,
+  "grad_ckpt": false,
+  "no_val": false,
+  "out": "/content/drive/MyDrive/GenD_PCR_Project/v2/runs_sensitivity/pdc_lam2.0_s0",
+  "resume": true,
+  "total_steps": 1920,
+  "steps_per_epoch": 320,
+  "trainable_tensors": 102,
+  "trainable_params": 104450,
+  "exact_pair_fraction": {
+    "Deepfakes": 1.0,
+    "Face2Face": 0.14375,
+    "FaceSwap": 0.571875,
+    "NeuralTextures": 0.571875
+  },
+  "batch_fingerprint": "425b31dcfc25",
+  "n_train_crops": 9600,
+  "n_val_crops": 2240,
+  "torch": "2.14.1+cu130",
+  "gpu": "NVIDIA A100-SXM4-80GB"
+}

@@ -1,0 +1,7 @@
+{
+  "ablation": "pdc_shuffled_pairs",
+  "base_arm": "pdc",
+  "seed": 0,
+  "lam": 0.5,
+  "note": "reals cyclically shifted within batch by random k in [1,P-1]; generator not resumed"
+}

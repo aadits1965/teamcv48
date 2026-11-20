@@ -1,0 +1,23 @@
+# Google Colab, Python 3.13. torch comes preinstalled on Colab. Recorded in each run's config.json:
+# torch 2.14.1+cu130 for 22 of 23 runs, 2.11.0+cu130 for baseline_s0 only (see README, Environment).
+# torchvision was not recorded per run; use the build that matches the installed torch.
+torch==2.14.1
+torchvision
+transformers==4.56.2
+lightning==2.5.5
+torchmetrics
+pydantic
+rich
+seaborn
+wandb
+scikit-learn
+scipy
+pandas
+numpy
+pillow
+opencv-python
+# face pre-processing (authors' detector.py)
+onnxruntime-gpu[cuda,cudnn]
+imageio
+imageio-ffmpeg
+av

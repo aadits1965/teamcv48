@@ -1,0 +1,16 @@
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+# datasets must never be committed (FaceForensics++ / DFD terms of use)
+data/
+crops/
+raw/
+raw_dfd/
+*.mp4
+*.png
+*.tar
+*.tar.gz
+# large training states (only best.pt + baseline snapshots are versioned)
+last.pt
+*.tmp
+*.part

@@ -1,0 +1,24 @@
+run,group,gpu,seed,lam,data,batch_fingerprint,trainable_params,total_steps,best_step
+baseline_s0,runs,Tesla T4,0,0.0,v2,425b31dcfc25,104450,1920,320
+baseline_s1,runs,Tesla T4,1,0.0,v2,a5b33d8ba1a7,104450,1920,320
+baseline_s2,runs,Tesla T4,2,0.0,v2,df0b84af2080,104450,1920,480
+patch_s0,runs,Tesla T4,0,0.0,v2,425b31dcfc25,105475,1920,320
+patch_s1,runs,NVIDIA RTX PRO 6000 Blackwell Server Edition,1,0.0,v2,a5b33d8ba1a7,105475,1920,480
+patch_s2,runs,NVIDIA A100-SXM4-80GB,2,0.0,v2,df0b84af2080,105475,1920,320
+pdc_s0,runs,Tesla T4,0,0.5,v2,425b31dcfc25,104450,1920,320
+pdc_s1,runs,Tesla T4,1,0.5,v2,a5b33d8ba1a7,104450,1920,320
+pdc_s2,runs,Tesla T4,2,0.5,v2,df0b84af2080,104450,1920,480
+vrex_s0,runs,Tesla T4,0,10.0,v2,425b31dcfc25,104450,1920,320
+vrex_s1,runs,NVIDIA RTX PRO 6000 Blackwell Server Edition,1,10.0,v2,a5b33d8ba1a7,104450,1920,320
+vrex_s2,runs,NVIDIA RTX PRO 6000 Blackwell Server Edition,2,10.0,v2,df0b84af2080,104450,1920,320
+pdc_shuffled_s0,runs_ablation,Tesla T4,0,0.5,v2,425b31dcfc25,104450,1920,320
+pdc_shuffled_s1,runs_ablation,Tesla T4,1,0.5,v2,a5b33d8ba1a7,104450,1920,320
+baseline_full_s0,runs_followup,NVIDIA A100-SXM4-80GB,0,0.0,full,ea1dd02ef4c3,104450,5760,800
+baseline_full_s1,runs_followup,NVIDIA A100-SXM4-80GB,1,0.0,full,1941e211b691,104450,5760,480
+pdc_full_s0,runs_followup,NVIDIA A100-SXM4-80GB,0,0.5,full,ea1dd02ef4c3,104450,5760,1120
+pdc_full_s1,runs_followup,NVIDIA A100-SXM4-80GB,1,0.5,full,1941e211b691,104450,5760,480
+pdcvrex_s0,runs_followup,Tesla T4,0,0.5,v2,425b31dcfc25,104450,1920,640
+pdcvrex_s1,runs_followup,Tesla T4,1,0.5,v2,a5b33d8ba1a7,104450,1920,480
+pdcvrex_s2,runs_followup,Tesla T4,2,0.5,v2,df0b84af2080,104450,1920,480
+pdc_lam0.1_s0,runs_sensitivity,NVIDIA A100-SXM4-80GB,0,0.1,v2,425b31dcfc25,104450,1920,320
+pdc_lam2.0_s0,runs_sensitivity,NVIDIA A100-SXM4-80GB,0,2.0,v2,425b31dcfc25,104450,1920,160

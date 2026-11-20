@@ -1,0 +1,37 @@
+[
+  {
+    "video": "01_02__hugging_happy__YVGY8LOK",
+    "mask_frames_demux": 578,
+    "mask_frames_decoded": 578,
+    "frames_identical": "8/8",
+    "masks_identical": "8/8"
+  },
+  {
+    "video": "01_03__talking_angry_couch__ISF9SP4G",
+    "mask_frames_demux": 1466,
+    "mask_frames_decoded": 1466,
+    "frames_identical": "8/8",
+    "masks_identical": "8/8"
+  },
+  {
+    "video": "01_04__outside_talking_still_laughing__0XUW13",
+    "mask_frames_demux": 728,
+    "mask_frames_decoded": 728,
+    "frames_identical": "8/8",
+    "masks_identical": "8/8"
+  },
+  {
+    "video": "01_04__podium_speech_happy__GBC7ZGDP",
+    "mask_frames_demux": 898,
+    "mask_frames_decoded": 898,
+    "frames_identical": "8/8",
+    "masks_identical": "8/8"
+  },
+  {
+    "video": "01_04__walking_down_street_outside_angry__GBC",
+    "mask_frames_demux": 431,
+    "mask_frames_decoded": 431,
+    "frames_identical": "8/8",
+    "masks_identical": "8/8"
+  }
+]
